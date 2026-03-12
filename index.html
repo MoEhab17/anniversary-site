@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Happy Anniversary My Love</title>
   <style>
     * {
@@ -523,6 +523,7 @@
       height: 650px;
       margin-top: -20px;
       transform: scale(0.85);
+      transform-origin: center center;
     }
 
     .collage-img {
@@ -607,6 +608,7 @@
       text-align: center;
       max-width: 600px;
       animation: fadeInUp 1s ease-out;
+      padding: 20px;
     }
 
     /* Teddy Bear Overlay */
@@ -797,19 +799,22 @@
         font-size: 30px;
       }
 
+      .book-container {
+        min-height: 400px;
+        padding: 15px;
+      }
+
       .photos-container {
         grid-template-columns: 1fr;
         margin-left: 25px;
       }
 
-      .book-container {
-        min-height: 520px;
-      }
-
       .heart-shape-container {
-        width: 380px;
-        height: 350px;
-        transform: scale(0.9);
+        width: 700px;
+        height: 650px;
+        transform: scale(0.45);
+        margin-top: -150px;
+        margin-bottom: -150px;
       }
 
       .collage-img {
@@ -825,6 +830,7 @@
 
       .collage-title {
         font-size: 30px;
+        margin-top: 50px;
       }
 
       .final-title {
