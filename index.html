@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Anniversary My Love</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #000;
+      color: #fff;
+      overflow: hidden;
+      min-height: 100vh;
+    }
+
+    /* Canvas backgrounds */
+    #matrixCanvas,
+    #starCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    #matrixCanvas,
+    #starCanvas {
+      display: none;
+    }
+
+    #matrixCanvas.active,
+    #starCanvas.active {
+      display: block;
+    }
+
+    /* Sections */
+    .section {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s ease;
+      padding: 20px;
+    }
+
+    .section.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Countdown */
+    .countdown-num {
+      font-size: 200px;
+      font-weight: bold;
+      color: #ff1493;
+      text-shadow: 0 0 60px rgba(255, 20, 147, 1), 0 0 100px rgba(255, 20, 147, 0.5);
+      animation: popIn 0.5s ease-out;
+      z-index: 2;
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0.3);
+        opacity: 0;
+      }
+
+      70% {
+        transform: scale(1.1);
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Title */
+    .title-main {
+      font-size: 75px;
+      font-weight: bold;
+      background: linear-gradient(90deg, #ff69b4, #ff1493, #ff69b4);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shine 3s linear infinite, fadeIn 1s ease-out;
+      text-align: center;
+    }
+
+    .title-sub {
+      font-size: 50px;
+      color: #ff69b4;
+      margin-top: 20px;
+      animation: fadeIn 1s ease-out 0.3s both, glow 2s ease-in-out infinite;
+      text-align: center;
+    }
+
+    @keyframes shine {
+      to {
+        background-position: 200% center;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes glow {
+
+      0%,
+      100% {
+        text-shadow: 0 0 20px rgba(255, 20, 147, 0.8);
+      }
+
+      50% {
+        text-shadow: 0 0 40px rgba(255, 20, 147, 1);
+      }
+    }
+
+    /* Month */
+    .month-text {
+      font-size: 30px;
+      color: #ff69b4;
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease-out;
+      text-align: center;
+    }
+
+    .month-name {
+      font-size: 130px;
+      font-weight: bold;
+      color: #ff1493;
+      text-shadow: 0 0 60px rgba(255, 20, 147, 1);
+      letter-spacing: 15px;
+      animation: fadeIn 1s ease-out 0.2s both;
+      text-align: center;
+    }
+
+    .month-sub {
+      font-size: 28px;
+      color: #ff69b4;
+      margin-top: 25px;
+      animation: fadeIn 1s ease-out 0.4s both;
+      text-align: center;
+    }
+
+    /* Heart */
+    .heart-svg {
+      width: 250px;
+      height: 250px;
+      fill: #ff1493;
+      filter: drop-shadow(0 0 60px rgba(255, 20, 147, 1));
+      animation: heartbeat 1.5s ease-in-out infinite;
+    }
+
+    .heart-text {
+      font-size: 45px;
+      color: #ff69b4;
+      margin-top: 40px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      14% {
+        transform: scale(1.15);
+      }
+
+      28% {
+        transform: scale(1);
+      }
+
+      42% {
+        transform: scale(1.15);
+      }
+
+      70% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.6;
+      }
+    }
+
+    /* Memory Book */
+    .membook-wrapper {
+      width: 100%;
+      max-width: 750px;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .membook-title {
+      text-align: center;
+      font-size: 55px;
+      color: #ff69b4;
+      margin-bottom: 25px;
+      text-shadow: 0 0 30px rgba(255, 20, 147, 0.5);
+    }
+
+    .love-quote-box {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 20px 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 0 30px rgba(255, 20, 147, 0.3);
+      border: 2px solid #ff69b4;
+    }
+
+    .love-quote {
+      color: #333;
+      font-size: 18px;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .love-heart {
+      text-align: right;
+      font-size: 22px;
+      margin-top: 5px;
+    }
+
+    .book-container {
+      background: linear-gradient(135deg, #fff8e7 0%, #ffe4c4 100%);
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 0 50px rgba(255, 20, 147, 0.4), inset -10px 0 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+      min-height: 400px;
+      perspective: 1500px;
+    }
+
+    .book-cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #ff1493, #ff69b4);
+      border-radius: 15px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transform-origin: left center;
+      /* Snappier bezier curve for a more satisfying flip */
+      transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.8s ease-in 0.2s, box-shadow 1s ease;
+      box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.5), inset 2px 0 10px rgba(255, 255, 255, 0.4);
+      border-left: 25px solid #c71585;
+      transform-style: preserve-3d;
+    }
+
+    .book-cover::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 20%);
+      pointer-events: none;
+      border-radius: 15px;
+    }
+
+    .book-cover.open {
+      /* Flip past 90 degrees and fade out strongly */
+      transform: perspective(2000px) rotateY(-130deg);
+      opacity: 0;
+      pointer-events: none;
+      box-shadow: -20px 20px 40px rgba(0, 0, 0, 0.2), inset 2px 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    .book-cover h3 {
+      color: white;
+      font-size: 45px;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .book-cover-tap {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 18px;
+      margin-top: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    .book-spine {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 25px;
+      background: linear-gradient(90deg, #deb887, #f5deb3);
+      border-radius: 15px 0 0 15px;
+    }
+
+    .photos-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-left: 35px;
+    }
+
+    .photo-slot {
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #ffe4ec, #ffc0cb);
+      border-radius: 12px;
+      border: 5px solid white;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-icon {
+      font-size: 55px;
+      margin-bottom: 10px;
+    }
+
+    .photo-num {
+      font-size: 14px;
+      color: #ff1493;
+      font-weight: bold;
+    }
+
+    .photo-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 10px;
+      text-align: center;
+      color: #333;
+      font-size: 13px;
+    }
+
+    .page-info {
+      text-align: right;
+      color: #8b4513;
+      font-size: 13px;
+      margin-top: 15px;
+      margin-right: 10px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 20px;
+      transition: opacity 0.3s;
+    }
+
+    .nav-buttons.locked {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .nav-arrow {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: rgba(255, 20, 147, 0.85);
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-arrow:hover:not(:disabled) {
+      background: #ff1493;
+      transform: scale(1.15);
+    }
+
+    .nav-arrow:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .dots-container {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+      transition: opacity 0.3s;
+    }
+
+    .dots-container.locked {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 20, 147, 0.3);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      background: #ff1493;
+      width: 28px;
+      border-radius: 6px;
+    }
+
+    /* Tap Message */
+    .tap-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.7);
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.5s;
+    }
+
+    .tap-message.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .tap-text {
+      font-size: 50px;
+      color: #ff69b4;
+      text-shadow: 0 0 40px rgba(255, 20, 147, 1);
+      animation: bounce 1s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    /* Heart Collage */
+    .collage-wrapper {
+      animation: fadeIn 1s ease-out;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .collage-title {
+      font-size: 50px;
+      color: #ff69b4;
+      margin-bottom: 30px;
+      text-shadow: 0 0 30px rgba(255, 20, 147, 0.5);
+      text-align: center;
+    }
+
+    .heart-shape-container {
+      position: relative;
+      width: 700px;
+      height: 650px;
+      margin-top: -20px;
+      transform: scale(0.85);
+    }
+
+    .collage-img {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 12px;
+      border: 4px solid white;
+      box-shadow: 0 10px 30px rgba(255, 20, 147, 0.4);
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: linear-gradient(135deg, #ffe4ec, #ffc0cb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0) rotate(-15deg);
+    }
+
+    .collage-img.visible {
+      animation: modernPopIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .collage-img.spotlight {
+      transform: scale(1.6) !important;
+      z-index: 200 !important;
+      box-shadow: 0 20px 50px rgba(255, 20, 147, 0.8) !important;
+    }
+
+    @keyframes modernPopIn {
+      0% {
+        opacity: 0;
+        transform: scale(0) translateY(50px) rotate(-15deg);
+      }
+
+      60% {
+        opacity: 1;
+        transform: scale(1.1) translateY(-10px) rotate(5deg);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0) rotate(0deg);
+      }
+    }
+
+    .collage-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .collage-img:hover {
+      transform: scale(1.2) translateY(-10px) !important;
+      z-index: 100;
+      box-shadow: 0 15px 40px rgba(255, 20, 147, 0.6);
+    }
+
+    .collage-img:hover img {
+      transform: scale(1.1);
+    }
+
+    .collage-center {
+      width: 150px;
+      height: 150px;
+      font-size: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .collage-caption {
+      margin-top: 30px;
+      color: #ff69b4;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    /* Final Section */
+    .final-wrapper {
+      text-align: center;
+      max-width: 600px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    /* Teddy Bear Overlay */
+    .teddy-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+    }
+
+    .teddy-text {
+      font-size: 50px;
+      color: #ff69b4;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-shadow: 0 0 30px rgba(255, 20, 147, 0.8);
+      z-index: 20;
+      animation: fadeIn 1s ease-out;
+      text-align: center;
+    }
+
+    .teddy-animation {
+      position: absolute;
+      top: 100vh;
+      /* Start completely below the screen */
+      animation: floatUp 8s linear forwards;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .balloon-cluster {
+      position: relative;
+      font-size: 150px;
+      line-height: 1;
+      animation: sway 3s ease-in-out infinite alternate;
+      z-index: 2;
+    }
+
+    .balloon-string {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      height: 60px;
+      width: 2px;
+      background: rgba(255, 255, 255, 0.4);
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+    .teddy-bear {
+      font-size: 100px;
+      line-height: 1;
+      margin-top: 10px; /* Space for the string */
+      animation: sway-reverse 2.5s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 20px rgba(255, 105, 180, 0.5));
+      z-index: 2;
+    }
+
+    /* Falling Flowers Container */
+    #flowerCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      pointer-events: none;
+      display: none;
+    }
+
+    #flowerCanvas.active {
+      display: block;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0);
+      }
+
+      100% {
+        transform: translateY(-150vh);
+        /* Float all the way off the top */
+      }
+    }
+
+    @keyframes sway {
+      0% {
+        transform: rotate(-10deg);
+      }
+
+      100% {
+        transform: rotate(10deg);
+      }
+    }
+
+    @keyframes sway-reverse {
+      0% {
+        transform: rotate(10deg) translateX(10px);
+      }
+
+      100% {
+        transform: rotate(-10deg) translateX(-10px);
+      }
+    }
+
+    .final-title {
+      font-size: 60px;
+      color: #ff69b4;
+      margin-bottom: 30px;
+      text-shadow: 0 0 30px rgba(255, 20, 147, 0.5);
+    }
+
+    .quote-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 35px;
+      border: 1px solid rgba(255, 20, 147, 0.3);
+    }
+
+    .quote-line {
+      color: #ff69b4;
+      font-size: 22px;
+      line-height: 1.8;
+    }
+
+    .footer-love {
+      margin-top: 40px;
+      color: rgba(255, 20, 147, 0.6);
+      font-size: 16px;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .countdown-num {
+        font-size: 130px;
+      }
+
+      .title-main {
+        font-size: 42px;
+      }
+
+      .title-sub {
+        font-size: 32px;
+      }
+
+      .month-name {
+        font-size: 65px;
+        letter-spacing: 8px;
+      }
+
+      .month-text,
+      .month-sub {
+        font-size: 18px;
+      }
+
+      .heart-svg {
+        width: 170px;
+        height: 170px;
+      }
+
+      .heart-text {
+        font-size: 30px;
+      }
+
+      .membook-title {
+        font-size: 35px;
+      }
+
+      .book-cover h3 {
+        font-size: 30px;
+      }
+
+      .photos-container {
+        grid-template-columns: 1fr;
+        margin-left: 25px;
+      }
+
+      .book-container {
+        min-height: 520px;
+      }
+
+      .heart-shape-container {
+        width: 380px;
+        height: 350px;
+        transform: scale(0.9);
+      }
+
+      .collage-img {
+        width: 75px;
+        height: 75px;
+      }
+
+      .collage-center {
+        width: 90px;
+        height: 90px;
+        font-size: 50px;
+      }
+
+      .collage-title {
+        font-size: 30px;
+      }
+
+      .final-title {
+        font-size: 35px;
+      }
+
+      .tap-text {
+        font-size: 32px;
+      }
+
+      .teddy-text {
+        font-size: 35px;
+      }
+
+      .balloon-cluster {
+        font-size: 100px;
+      }
+
+      .teddy-bear {
+        font-size: 70px;
+      }
+    }
+  </style>
+  <base target="_blank">
+</head>
+
+<body>
+  <!-- Matrix Canvas for Countdown -->
+  <canvas id="matrixCanvas"></canvas>
+
+  <!-- Star Canvas for other sections -->
+  <canvas id="starCanvas"></canvas>
+
+  <!-- Section 1: Countdown -->
+  <div class="section active" id="sec-countdown">
+    <div class="countdown-num" id="countNum">3</div>
+  </div>
+
+  <!-- Section 2: Title -->
+  <div class="section" id="sec-title">
+    <h1 class="title-main">Happy Anniversary</h1>
+    <p class="title-sub">My Love</p>
+  </div>
+
+  <!-- Section 3: Month -->
+  <div class="section" id="sec-month">
+    <p class="month-text">This month is special because</p>
+    <h2 class="month-name">MARCH</h2>
+    <p class="month-sub">The month our love story began</p>
+  </div>
+
+  <!-- Section 4: Heart -->
+  <div class="section" id="sec-heart">
+    <svg class="heart-svg" viewBox="0 0 24 24">
+      <path
+        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+    </svg>
+    <p class="heart-text">I Love You</p>
+  </div>
+
+  <!-- Falling Flowers Canvas -->
+  <canvas id="flowerCanvas"></canvas>
+
+  <!-- Section 4.5: Teddy Bear -->
+  <div class="section" id="sec-teddy">
+    <div class="teddy-wrapper">
+      <h2 class="teddy-text">Happy Anniversary Eman</h2>
+      <div class="teddy-animation">
+        <div class="balloon-cluster">
+          🎈🎈🎈
+          <div class="balloon-string"></div>
+        </div>
+        <div class="teddy-bear">🧸</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: Memory Book -->
+  <div class="section" id="sec-membook">
+    <div class="membook-wrapper">
+      <h2 class="membook-title">Our Memory Book</h2>
+
+      <div class="love-quote-box">
+        <p class="love-quote" id="quoteText">"Every moment with you is a treasure I hold dear"</p>
+        <p class="love-heart">💕</p>
+      </div>
+
+      <div class="book-container">
+        <div class="book-spine"></div>
+        <div class="photos-container" id="photosBox">
+          <!-- Photos injected here -->
+        </div>
+        <p class="page-info" id="pageInfo">Page 1 of 3</p>
+
+        <!-- Cover Overlay -->
+        <div class="book-cover" id="bookCover" onclick="openBook()">
+          <h3>Our Memories ❤️</h3>
+          <p class="book-cover-tap">✨ Tap to open ✨</p>
+        </div>
+      </div>
+
+      <div class="nav-buttons locked" id="navButtons">
+        <button class="nav-arrow" id="btnPrev" onclick="prevPage()">&#10094;</button>
+        <button class="nav-arrow" id="btnNext" onclick="nextPage()">&#10095;</button>
+      </div>
+
+      <div class="dots-container locked" id="dotsBox">
+        <div class="dot active" onclick="setPage(0)"></div>
+        <div class="dot" onclick="setPage(1)"></div>
+        <div class="dot" onclick="setPage(2)"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tap Anywhere Message -->
+  <div class="tap-message" id="tapMessage" onclick="showCollage()">
+    <p class="tap-text">✨ Tap Anywhere ✨</p>
+  </div>
+
+  <!-- Section 6: Heart Collage -->
+  <div class="section" id="sec-collage">
+    <div class="collage-wrapper">
+      <h2 class="collage-title">My Heart Belongs to You</h2>
+      <div class="heart-shape-container" id="heartBox">
+        <!-- Heart photos positioned here -->
+      </div>
+      <p class="collage-caption">Every photo is a piece of my heart that belongs to you</p>
+    </div>
+  </div>
+
+  <!-- Section 7: Final -->
+  <div class="section" id="sec-final">
+    <div class="final-wrapper">
+      <h2 class="final-title">Forever Yours</h2>
+
+      <div class="quote-card">
+        <p class="quote-line">"In all the world, there is no heart for me like yours. In all the world, there is no love
+          for you like mine."</p>
+      </div>
+
+      <p class="footer-love">Made with ❤️ for you</p>
+    </div>
+  </div>
+
+  <script>
+    // ==================== PHOTO CONFIGURATION ====================
+    // ADD YOUR PHOTOS HERE - Replace empty strings with image URLs/paths
+
+    const memoryBookPhotos = [
+      // Page 1
+      { id: 1, src: '1.jpg', caption: 'Our first moment' },
+      { id: 2, src: '2.jpg', caption: 'Together forever' },
+      // Page 2
+      { id: 3, src: '3.jpg', caption: 'Your beautiful smile' },
+      { id: 4, src: '4.jpg', caption: 'My favorite person' },
+      // Page 3
+      { id: 5, src: '5.jpg', caption: 'Love at first sight' },
+      { id: 6, src: '6.jpg', caption: 'Always and forever' }
+    ];
+
+    const heartCollagePhotos = [
+      // Add 25 photo URLs/paths here
+      { id: 1, src: '7.jpg' },
+      { id: 2, src: '8.jpg' },
+      { id: 3, src: '9.jpg' },
+      { id: 4, src: '10.jpg' },
+      { id: 5, src: '11.jpg' },
+      { id: 6, src: '12.jpg' },
+      { id: 7, src: '13.jpg' },
+      { id: 8, src: '14.jpg' },
+      { id: 9, src: '15.jpg' },
+      { id: 10, src: '16.jpg' },
+      { id: 11, src: '17.jpg' },
+      { id: 12, src: '18.jpg' },
+      { id: 13, src: '19.jpg' },
+      { id: 14, src: '20.jpg' },
+      { id: 15, src: '21.jpg' },
+      { id: 16, src: '22.jpg' },
+      { id: 17, src: '23.jpg' },
+      { id: 18, src: '24.jpg' },
+      { id: 19, src: '25.jpg' },
+      { id: 20, src: '26.jpg' },
+      { id: 21, src: '27.jpg' },
+      { id: 22, src: '28.jpg' },
+      { id: 23, src: '29.jpg' },
+      { id: 24, src: '30.jpg' },
+      { id: 25, src: '31.jpg' }
+    ];
+
+    // ==================== MATRIX RAIN BACKGROUND ====================
+    const matrixCanvas = document.getElementById('matrixCanvas');
+    const matrixCtx = matrixCanvas.getContext('2d');
+    let matrixInterval;
+
+    function resizeMatrix() {
+      matrixCanvas.width = window.innerWidth;
+      matrixCanvas.height = window.innerHeight;
+    }
+    resizeMatrix();
+
+    const katakana = 'アァカサタナハ❤️マヤャラワガザダバパイィキシチニヒミリヰギジ❤️ヂビピウゥクスツヌフムユュルグズブヅプエェ❤️ケセテネヘメレヱゲゼデベペオォコソト❤️ノホモヨョロヲゴゾドボポヴッン❤️0123456789❤️ABCDEFGHIJKLMNOP❤️QRSTUVWXYZ';
+    const fontSize = 14;
+    let drops = [];
+    let chars = [];
+
+    function initMatrix() {
+      const columns = Math.floor(matrixCanvas.width / fontSize);
+      drops = Array(columns).fill(1).map(() => Math.random() * -50);
+      chars = Array(columns).fill('').map(() => katakana[Math.floor(Math.random() * katakana.length)]);
+    }
+
+    function drawMatrix() {
+      matrixCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+      matrixCtx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        // Randomly change character
+        if (Math.random() > 0.95) {
+          chars[i] = katakana[Math.floor(Math.random() * katakana.length)];
+        }
+
+        // Pink gradient
+        const gradient = Math.max(0.3, 1 - (y / matrixCanvas.height));
+        const pinkVal = Math.floor(255 * gradient);
+        matrixCtx.fillStyle = `rgb(255, ${Math.floor(pinkVal * 0.2)}, ${Math.floor(pinkVal * 0.6)})`;
+        matrixCtx.fillText(chars[i], x, y);
+
+        if (y > matrixCanvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    function startMatrix() {
+      initMatrix();
+      matrixCanvas.classList.add('active');
+      matrixInterval = setInterval(drawMatrix, 50);
+    }
+
+    function stopMatrix() {
+      clearInterval(matrixInterval);
+      matrixCanvas.classList.remove('active');
+      document.getElementById('starCanvas').classList.add('active');
+    }
+
+    // ==================== STAR BACKGROUND ====================
+    const starCanvas = document.getElementById('starCanvas');
+    const starCtx = starCanvas.getContext('2d');
+    let stars = [];
+    let shootingStars = [];
+
+    function resizeStar() {
+      starCanvas.width = window.innerWidth;
+      starCanvas.height = window.innerHeight;
+    }
+    resizeStar();
+    window.addEventListener('resize', () => {
+      resizeMatrix();
+      resizeStar();
+    });
+
+    // Create stars
+    for (let i = 0; i < 150; i++) {
+      stars.push({
+        x: Math.random() * starCanvas.width,
+        y: Math.random() * starCanvas.height,
+        size: Math.random() * 2 + 0.5,
+        opacity: Math.random(),
+        speed: Math.random() * 0.02 + 0.005
+      });
+    }
+
+    function drawStars() {
+      const gradient = starCtx.createLinearGradient(0, 0, 0, starCanvas.height);
+      gradient.addColorStop(0, '#0a0a1a');
+      gradient.addColorStop(0.5, '#1a1a3a');
+      gradient.addColorStop(1, '#0d0d2a');
+      starCtx.fillStyle = gradient;
+      starCtx.fillRect(0, 0, starCanvas.width, starCanvas.height);
+
+      stars.forEach(star => {
+        star.opacity += star.speed;
+        const twinkle = Math.sin(star.opacity * 5) * 0.3 + 0.7;
+        starCtx.beginPath();
+        starCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        starCtx.fillStyle = `rgba(255, 255, 255, ${twinkle})`;
+        starCtx.fill();
+      });
+
+      shootingStars.forEach((ss, i) => {
+        ss.x += ss.vx;
+        ss.y += ss.vy;
+        ss.life--;
+
+        const grad = starCtx.createLinearGradient(ss.x, ss.y, ss.x - 50, ss.y + 50);
+        grad.addColorStop(0, 'rgba(255,255,255,0)');
+        grad.addColorStop(0.5, 'rgba(255,255,255,0.8)');
+        grad.addColorStop(1, 'rgba(255,255,255,0)');
+
+        starCtx.beginPath();
+        starCtx.moveTo(ss.x, ss.y);
+        starCtx.lineTo(ss.x - 50, ss.y + 50);
+        starCtx.strokeStyle = grad;
+        starCtx.lineWidth = 2;
+        starCtx.stroke();
+
+        if (ss.life <= 0) shootingStars.splice(i, 1);
+      });
+
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+
+    setInterval(() => {
+      if (Math.random() < 0.3) {
+        shootingStars.push({
+          x: Math.random() * starCanvas.width * 0.5,
+          y: Math.random() * starCanvas.height * 0.3,
+          vx: 8,
+          vy: 8,
+          life: 30
+        });
+      }
+    }, 2000);
+
+    // ==================== MEMORY BOOK ====================
+    const loveQuotes = [
+      "Every moment with you is a treasure I hold dear",
+      "Your smile is the first thing I want to see every morning",
+      "In your eyes, I found my home"
+    ];
+
+    let currentPage = 0;
+    const totalPages = 3;
+
+    function renderPage() {
+      const start = currentPage * 2;
+      const box = document.getElementById('photosBox');
+      const pagePhotos = memoryBookPhotos.slice(start, start + 2);
+
+      box.innerHTML = pagePhotos.map(p => {
+        if (p.src) {
+          return `
+            <div class="photo-slot">
+              <img src="${p.src}" alt="${p.caption}">
+              <div class="photo-caption">${p.caption}</div>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="photo-slot">
+              <div class="photo-icon">📷</div>
+              <div class="photo-num">Photo ${p.id}</div>
+              <div class="photo-caption">${p.caption}</div>
+            </div>
+          `;
+        }
+      }).join('');
+
+      document.getElementById('quoteText').textContent = `"${loveQuotes[currentPage]}"`;
+      document.getElementById('pageInfo').textContent = `Page ${currentPage + 1} of ${totalPages}`;
+
+      document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === currentPage));
+      document.getElementById('btnPrev').disabled = currentPage === 0;
+      document.getElementById('btnNext').disabled = false;
+
+      if (currentPage === totalPages - 1) {
+        document.getElementById('btnNext').innerHTML = '✖'; // Close icon
+      } else {
+        document.getElementById('btnNext').innerHTML = '&#10095;'; // Right arrow
+      }
+    }
+
+    function openBook() {
+      document.getElementById('bookCover').classList.add('open');
+      document.getElementById('navButtons').classList.remove('locked');
+      document.getElementById('dotsBox').classList.remove('locked');
+    }
+
+    function closeBook() {
+      document.getElementById('bookCover').classList.remove('open');
+      setTimeout(() => {
+        document.getElementById('tapMessage').classList.add('active');
+      }, 1000);
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages - 1) {
+        currentPage++;
+        renderPage();
+      } else {
+        closeBook();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 0) {
+        currentPage--;
+        renderPage();
+      }
+    }
+
+    function setPage(n) {
+      currentPage = n;
+      renderPage();
+    }
+
+    // ==================== HEART COLLAGE ====================
+    let spotlightComplete = false;
+
+    function createHeartCollage() {
+      const box = document.getElementById('heartBox');
+      const cx = 350;
+      const cy = 300;
+      const size = 220;
+      const totalPhotos = 25;
+      const photosArray = [];
+
+      // 25 photos in heart shape
+      for (let i = 0; i < totalPhotos; i++) {
+        // Distribute points evenly along the heart curve
+        const t = (i / totalPhotos) * Math.PI * 2;
+        const x = cx + size * (16 * Math.pow(Math.sin(t), 3)) / 16;
+        const y = cy - size * (13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t)) / 16;
+
+        const photo = heartCollagePhotos[i];
+        const div = document.createElement('div');
+        div.className = 'collage-img';
+
+        // Adjust positional offset due to image size (120/2 = 60)
+        div.style.left = (x - 60) + 'px';
+        div.style.top = (y - 60) + 'px';
+
+        if (photo.src) {
+          div.innerHTML = `<img src="${photo.src}" alt="love">`;
+        } else {
+          div.innerHTML = '📷';
+        }
+
+        box.appendChild(div);
+        photosArray.push(div);
+      }
+
+      // Center heart
+      const center = document.createElement('div');
+      center.className = 'collage-img collage-center';
+      center.style.left = (cx - 75) + 'px';
+      center.style.top = (cy - 75) + 'px';
+      center.innerHTML = '❤️';
+      box.appendChild(center);
+      photosArray.push(center);
+
+      // Sequence 1: Display one after another
+      let delay = 0;
+      photosArray.forEach((el, index) => {
+        setTimeout(() => {
+          el.classList.add('visible');
+        }, delay);
+        delay += 250; // Pop in every 250ms
+      });
+
+      // Sequence 2: Enlarge individually after all are displayed
+      const timeToFinishLoading = delay + 500; // Wait for last pop-in to finish
+
+      photosArray.forEach((el, index) => {
+        setTimeout(() => {
+          // Add spotlight highlight class
+          el.classList.add('spotlight');
+
+          // Remove highlight after a short time
+          setTimeout(() => {
+            el.classList.remove('spotlight');
+          }, 800);
+
+        }, timeToFinishLoading + (index * 800)); // Enlarge each for 800ms
+      });
+
+      // Calculate total duration for all animations
+      const totalAnimationTime = timeToFinishLoading + (photosArray.length * 800);
+
+      setTimeout(() => {
+        spotlightComplete = true;
+        // Start the 2s timeout to go to the final section
+        setTimeout(() => {
+          showSection(7); // Show final
+        }, 2000);
+      }, totalAnimationTime);
+    }
+
+    let collageCreated = false;
+    function showCollage() {
+      document.getElementById('tapMessage').classList.remove('active');
+      if (!collageCreated) {
+        createHeartCollage();
+        collageCreated = true;
+      }
+      showSection(6); // Show collage
+    }
+
+    // ==================== FALLING FLOWERS ====================
+    const flowerCanvas = document.getElementById('flowerCanvas');
+    const flowerCtx = flowerCanvas.getContext('2d');
+    let flowers = [];
+    let flowerInterval;
+
+    function resizeFlowers() {
+      flowerCanvas.width = window.innerWidth;
+      flowerCanvas.height = window.innerHeight;
+    }
+    resizeFlowers();
+
+    const flowerEmojis = ['🌸', '🌺', '🌷', '🌹', '🌼'];
+
+    function createFlower() {
+      return {
+        x: Math.random() * flowerCanvas.width,
+        y: -50,
+        size: Math.random() * 20 + 20,
+        speedY: Math.random() * 2 + 1,
+        speedX: (Math.random() - 0.5) * 2,
+        rotation: Math.random() * 360,
+        rotationSpeed: (Math.random() - 0.5) * 4,
+        emoji: flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)]
+      };
+    }
+
+    // Initialize some flowers
+    for (let i = 0; i < 30; i++) {
+      let flower = createFlower();
+      flower.y = Math.random() * flowerCanvas.height; // Start some on screen
+      flowers.push(flower);
+    }
+
+    function drawFlowers() {
+      flowerCtx.clearRect(0, 0, flowerCanvas.width, flowerCanvas.height);
+
+      flowers.forEach((f, index) => {
+        flowerCtx.save();
+        flowerCtx.translate(f.x, f.y);
+        flowerCtx.rotate(f.rotation * Math.PI / 180);
+        flowerCtx.font = f.size + 'px Arial';
+        flowerCtx.textAlign = 'center';
+        flowerCtx.textBaseline = 'middle';
+        flowerCtx.fillText(f.emoji, 0, 0);
+        flowerCtx.restore();
+
+        f.y += f.speedY;
+        f.x += f.speedX;
+        f.rotation += f.rotationSpeed;
+
+        // Reset if off bottom
+        if (f.y > flowerCanvas.height + 50) {
+          flowers[index] = createFlower();
+        }
+      });
+      flowerInterval = requestAnimationFrame(drawFlowers);
+    }
+
+    function startFlowers() {
+      flowerCanvas.classList.add('active');
+      drawFlowers();
+    }
+
+    function stopFlowers() {
+      cancelAnimationFrame(flowerInterval);
+      flowerCanvas.classList.remove('active');
+    }
+
+    window.addEventListener('resize', () => {
+      resizeMatrix();
+      resizeStar();
+      resizeFlowers();
+    });
+
+    // ==================== SECTION SEQUENCE ====================
+    const sections = ['sec-countdown', 'sec-title', 'sec-month', 'sec-heart', 'sec-teddy', 'sec-membook', 'sec-collage', 'sec-final'];
+    let secIndex = 0;
+
+    function showSection(i) {
+      sections.forEach((id, idx) => {
+        document.getElementById(id).classList.toggle('active', idx === i);
+      });
+    }
+
+    // Start
+    startMatrix();
+
+    // Countdown
+    let count = 3;
+    const countInt = setInterval(() => {
+      count--;
+      if (count > 0) {
+        document.getElementById('countNum').textContent = count;
+      } else {
+        clearInterval(countInt);
+        nextSection();
+      }
+    }, 1000);
+
+    function nextSection() {
+      secIndex++;
+      if (secIndex >= sections.length) return;
+      showSection(secIndex);
+
+      const delays = [0, 3000, 3000, 3000, 8000, 0, 0, 0];
+      if (delays[secIndex] > 0) {
+        setTimeout(nextSection, delays[secIndex]);
+      }
+
+      // Teddy Bear + Flowers when shown (index 4)
+      if (secIndex === 4) {
+        stopMatrix(); // Return to stars before the bear flies up
+        startFlowers();
+      }
+
+      // Init memory book when shown (index 5)
+      if (secIndex === 5) {
+        stopFlowers(); // Stop falling flowers for memory book
+        renderPage();
+      }
+    }
+  </script>
+</body>
+
+</html>
