@@ -759,6 +759,12 @@
 
     /* Mobile */
     @media (max-width: 768px) {
+      .section {
+        padding: 10px;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+      
       .countdown-num {
         font-size: 110px;
       }
@@ -792,40 +798,99 @@
       }
 
       .membook-title {
-        font-size: 28px;
+        font-size: 26px;
+        margin-bottom: 5px;
+      }
+
+      .love-quote-box {
+        padding: 10px;
+        margin-bottom: 15px;
+      }
+
+      .love-quote {
+        font-size: 14px;
+      }
+
+      .love-heart {
+        font-size: 16px;
+        margin-top: 5px;
       }
 
       .book-cover h3 {
-        font-size: 26px;
+        font-size: 24px;
+      }
+
+      .book-cover-tap {
+        font-size: 14px;
+        margin-top: 10px;
+      }
+
+      .book-spine {
+        width: 20px;
       }
 
       .photos-container {
-        grid-template-columns: 1fr;
-        margin-left: 20px;
+        grid-template-columns: 1fr 1fr;
+        margin-left: 25px;
+        gap: 10px;
+      }
+
+      .photo-icon {
+        font-size: 30px;
+        margin-bottom: 5px;
+      }
+
+      .photo-num {
+        font-size: 12px;
+      }
+
+      .photo-caption {
+        font-size: 11px;
+        padding: 5px;
       }
 
       .book-container {
-        min-height: 500px;
+        min-height: auto;
         padding: 15px;
+      }
+
+      .page-info {
+        font-size: 12px;
+        margin-top: 10px;
+      }
+
+      .nav-buttons {
+        gap: 15px;
+        margin-top: 10px;
+      }
+
+      .nav-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+
+      .dots-container {
+        margin-top: 10px;
       }
 
       .heart-shape-container {
         width: 700px;
         height: 650px;
-        transform: scale(0.48);
-        transform-origin: center center;
-        margin-top: -150px;
-        margin-bottom: -150px;
+        transform: scale(0.40);
+        transform-origin: top center;
+        margin-bottom: -390px;
       }
 
       .collage-title {
-        font-size: 26px;
-        margin-bottom: 25px;
+        font-size: 24px;
+        margin-bottom: 5px;
       }
 
       .collage-caption {
         font-size: 14px;
-        padding: 0 15px;
+        padding: 0 10px;
+        margin-top: 10px;
       }
 
       .final-title {
@@ -849,11 +914,11 @@
       }
 
       .quote-card {
-        padding: 25px;
+        padding: 20px;
       }
 
       .quote-line {
-        font-size: 18px;
+        font-size: 16px;
       }
     }
   </style>
